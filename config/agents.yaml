@@ -1,0 +1,60 @@
+# Agent configuration for 2-agent demo
+
+agents:
+  coder:
+    name: "Code Generator"
+    role: "implementation"
+    training_data_sources:
+      - scikit-learn
+      - flask
+      - pytest
+    capabilities:
+      - function_implementation
+      - class_design
+      - algorithm_implementation
+      - api_development
+    system_prompt: "You are an expert programmer. Write clean, efficient, well-documented code."
+
+  reviewer:
+    name: "Code Reviewer"
+    role: "evaluation"
+    training_data_sources:
+      - scikit-learn
+      - flask
+      - pytest
+    capabilities:
+      - bug_detection
+      - style_review
+      - security_analysis
+      - performance_optimization
+    system_prompt: "You are a senior code reviewer. Provide constructive, actionable feedback."
+
+training:
+  shared:
+    base_model: "deepseek-ai/deepseek-coder-6.7b-instruct"
+    epochs: 3
+    batch_size: 4
+    optimizer: "paged_adamw_8bit"
+    
+  per_agent:
+    coder:
+      learning_rate: 2e-4
+      lora_r: 16
+      focus: "implementation_quality"
+      
+    reviewer:
+      learning_rate: 2e-4
+      lora_r: 16
+      focus: "evaluation_accuracy"
+
+ifd_kmeans:
+  enabled: true
+  n_clusters: 10
+  sample_rate: 0.4
+  min_examples_per_cluster: 5
+  
+data_pipeline:
+  max_files_per_repo: 2000
+  min_lines_per_file: 10
+  max_lines_per_file: 500
+  output_format: "jsonl"

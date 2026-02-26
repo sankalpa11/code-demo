@@ -1,0 +1,12 @@
+# Colab-only training requirements (no AWS / FastAPI / dev tools)
+# torch is pre-installed in Colab — skip reinstalling to save time
+transformers==4.46.3    # uses eval_strategy (not evaluation_strategy)
+peft==0.13.2
+bitsandbytes           # unpin: must match CUDA runtime (Colab uses cu128 as of 2026)
+accelerate==0.34.2
+datasets==2.21.0
+trl==0.11.4             # SFTConfig has max_seq_length at this version
+
+# Utilities needed by training code
+python-dotenv==1.0.0
+tqdm>=4.66.3
